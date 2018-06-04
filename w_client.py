@@ -1,6 +1,6 @@
 from socket import *
 import json
-from utils import send_message, get_message
+from utils import JIM
 
 if __name__ == '__main__':
 
@@ -13,13 +13,13 @@ if __name__ == '__main__':
     'action': 'presence'
 
     }
-    send_message(msg, client)
-    responce = get_message(client)
+    JIM.send_message(msg, client)
+    responce = JIM.get_message(client)
     print(responce)
 
     while True:
 
-        serv_message = get_message(client)
+        serv_message = JIM.get_message(client)
         print('{} написал: {}'.format(serv_message['user'], serv_message['message']))
 
 
