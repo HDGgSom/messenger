@@ -1,6 +1,6 @@
 from socket import *
 import json
-from utils import send_message, get_message
+from utils import JIM
 
 if __name__ == '__main__':
 
@@ -15,8 +15,8 @@ if __name__ == '__main__':
 
     }
 
-    send_message(msg, client)
-    responce = get_message(client)
+    JIM.send_message(msg, client)
+    responce = JIM.get_message(client)
     print(responce)
     while True:
         msg = input('Введите ваше сообщение: ')
@@ -26,6 +26,6 @@ if __name__ == '__main__':
             'user': 'Legion Commander',
             'message': msg
         }
-        send_message(message, client)
+        JIM.send_message(message, client)
 
     client.close()

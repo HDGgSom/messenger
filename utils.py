@@ -23,7 +23,7 @@ class Log:
                 log.info(func)
             else:
                 logging.basicConfig(
-                    filename='app.log',
+                    filename='server_log.log',
                     format='%(levelname)-10s %(asctime)s    function name: {} %(message)s'.format(func.__name__),
                     level=logging.DEBUG
                 )
@@ -35,31 +35,32 @@ class Log:
 
 log = Log()
 
-@log
-def send_responce(client, responce):
-    js_responce = json.dumps(responce)
-    client.send(js_responce.encode('utf-8'))
-
-@log
+@Log(show_params=False)
 def dict_to_bytes(data):
     jmessage = json.dumps(data)
     bytemessage = jmessage.encode('utf-8')
     return bytemessage
 
-@log
+@Log(show_params=False)
 def bytes_to_dict(data):
     decoded_message = data.decode('utf-8')
     js = json.loads(decoded_message)
     return js
 
-@log
-def get_message(sock):
-    message = sock.recv(1024)
-    dec_msg = bytes_to_dict(message)
-    return dec_msg
+class JIM:
 
-@log
-def send_message(message, client):
-    bytemessage = dict_to_bytes(message)
-    client.send(bytemessage)
+    @log
+    def get_message(sock):
+        message = sock.recv(1024)
+        dec_msg = bytes_to_dict(message)
+        return dec_msg
 
+    @log
+    def send_message(message, client):
+        bytemessage = dict_to_bytes(message)
+        client.send(bytemessage)
+
+    @log
+    def send_responce(client, responce):
+        js_responce = json.dumps(responce)
+        client.send(js_responce.encode('utf-8'))

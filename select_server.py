@@ -1,5 +1,5 @@
 from socket import *
-from utils import get_message, send_responce, bytes_to_dict, dict_to_bytes, Log, log
+from utils import JIM
 from select import *
 
 def new_listen_socket(address):
@@ -20,7 +20,7 @@ def mainloop():
         try:
             client, addr = server.accept()
 
-            msg = get_message(client)
+            msg = JIM.get_message(client)
 
             responce_200 = {
                 'responce': 200,
@@ -36,10 +36,10 @@ def mainloop():
             print(msg)
 
             if msg['action'] == 'presence':
-                send_responce(client, responce_200)
+                JIM.send_responce(client, responce_200)
 
             else:
-                send_responce(client, responce_400)
+                JIM.send_responce(client, responce_400)
 
         except OSError as e:
             pass
@@ -55,10 +55,10 @@ def mainloop():
                 pass
             for some_client in r:
                 try:
-                    client_msg = get_message(some_client)
+                    client_msg = JIM.get_message(some_client)
                     print(client_msg)
                     for some_client in w:
-                        send_responce(some_client, client_msg)
+                        JIM.send_responce(some_client, client_msg)
 
                 except:
                     print('Клиент {} отключился'.format(client.getpeername()))
